@@ -15,30 +15,31 @@ app.use(express.urlencoded({ extended: true }))
 const routesPath = path.join(__dirname, 'routes')
 const routes = []
 
-const routeFiles = fs.readdirSync(routesPath).filter(file => file.endsWith('.js'))
+if (fs.existsSync(routesPath)) {
+  const routeFiles = fs.readdirSync(routesPath).filter(file => file.endsWith('.js'))
 
-routeFiles.forEach(file => {
-  const route = require(`./routes/${file}`)
-  app.use('/', route)
-  console.log(`✅ Loaded: ${file}`)
-  
-  // Collect routes for display
-  if (route.stack) {
-    route.stack.forEach(layer => {
-      if (layer.route) {
-        const methods = Object.keys(layer.route.methods).join(', ').toUpperCase()
-        const path = layer.route.path
-        routes.push({
-          file: file,
-          method: methods,
-          path: path
-        })
-      }
-    })
-  }
-})
+  routeFiles.forEach(file => {
+    const route = require(`./routes/${file}`)
+    app.use('/', route)
+    console.log(`✅ Loaded: ${file}`)
+    
+    if (route.stack) {
+      route.stack.forEach(layer => {
+        if (layer.route) {
+          const methods = Object.keys(layer.route.methods).join(', ').toUpperCase()
+          const path = layer.route.path
+          routes.push({
+            file: file,
+            method: methods,
+            path: path
+          })
+        }
+      })
+    }
+  })
+}
 
-// Home - List all routes
+// Home
 app.get('/', (req, res) => {
   const grouped = {}
   routes.forEach(r => {
@@ -59,23 +60,27 @@ app.use((req, res) => {
 
 // Error handler
 app.use((err, req, res, next) => {
-  console.error(err.stack)
-  res.status(500).json({ status: false, error: err.message })
+  console.error('❌ Error:', err.message)
+  res.status(500).json({ status: false, error: err.message || 'Internal server error' })
 })
 
-// Start
-app.listen(PORT, '0.0.0.0', () => {
-  console.log('\n' + '='.repeat(50))
-  console.log('🚀 API Server Running')
-  console.log('='.repeat(50))
-  console.log(`📡 URL: http://localhost:${PORT}\n`)
-  console.log('📋 Routes:')
-  console.log('-'.repeat(50))
-  routes.forEach(r => {
-    console.log(`  ${r.method.padEnd(6)} ${r.path}`)
+// Export untuk Vercel
+if (process.env.VERCEL) {
+  module.exports = app
+} else {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log('\n' + '='.repeat(50))
+    console.log('🚀 API Server Running')
+    console.log('='.repeat(50))
+    console.log(`📡 URL: http://localhost:${PORT}\n`)
+    console.log('📋 Routes:')
+    console.log('-'.repeat(50))
+    routes.forEach(r => {
+      console.log(`  ${r.method.padEnd(6)} ${r.path}`)
+    })
+    console.log('-'.repeat(50))
+    console.log(`✅ Total: ${routes.length} endpoints`)
+    console.log('='.repeat(50))
   })
-  console.log('-'.repeat(50))
-  console.log(`✅ Total: ${routes.length} endpoints\n`)
-  console.log('='.repeat(50))
-})
+}
 
