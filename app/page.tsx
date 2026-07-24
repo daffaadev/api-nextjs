@@ -925,14 +925,12 @@ export default function Home() {
   {SOCIAL_CARDS.map((s, i) => (
     <Reveal
       key={s.name}
-      as="a"
-      href={s.href}
-      target="_blank"
-      rel="noopener noreferrer"
+      as="div"
       dir={i % 2 === 0 ? "left" : "right"}
       group="social"
       className={`social-card ${s.full ? "sm:col-span-2" : ""}`}
       style={{ ["--accent" as any]: s.accent, ["--accent-soft" as any]: s.accentSoft }}
+      onClick={() => window.open(s.href, "_blank")}
     >
       <span className="glow-a" />
       <span className="glow-b" />
