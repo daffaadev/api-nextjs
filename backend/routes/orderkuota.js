@@ -2,8 +2,7 @@ const axios = require('axios')
 const express = require('express')
 const router = express.Router()
 
-// GET /api/orderkuota/login
-router.get('/login', async (req, res) => {
+router.get('/orderkuota/login', async (req, res) => {
   try {
     const { username, password } = req.query
 
@@ -50,38 +49,6 @@ router.get('/login', async (req, res) => {
       status: false,
       error: e.message,
       data: e.response?.data || null
-    })
-  }
-})
-
-// GET /api/orderkuota/profile (contoh tambahan)
-router.get('/profile', async (req, res) => {
-  try {
-    const { token } = req.query
-
-    if (!token) {
-      return res.json({
-        status: false,
-        error: 'Parameter token wajib diisi'
-      })
-    }
-
-    const { data } = await axios.get('https://app.orderkuota.com/api/v2/profile', {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'User-Agent': 'okhttp/4.12.0'
-      }
-    })
-
-    return res.json({
-      status: true,
-      result: data
-    })
-
-  } catch (e) {
-    return res.status(500).json({
-      status: false,
-      error: e.message
     })
   }
 })
