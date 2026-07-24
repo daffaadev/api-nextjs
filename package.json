@@ -15,12 +15,13 @@
     "both": "concurrently \"npm run dev\" \"npm run backend-dev\""
   },
   "dependencies": {
+    "axios": "^1.7.2",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "lucide-react": "^1.26.0",
     "next": "16.2.11",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "axios": "^1.7.2",
-    "express": "^4.19.2",
-    "cors": "^2.8.5",
     "yt-search": "^2.10.3"
   },
   "devDependencies": {
@@ -28,11 +29,11 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "^8.2.2",
     "eslint": "^9",
     "eslint-config-next": "16.2.11",
-    "tailwindcss": "^4",
-    "typescript": "^5",
     "nodemon": "^3.1.4",
-    "concurrently": "^8.2.2"
+    "tailwindcss": "^4",
+    "typescript": "^5"
   }
 }
