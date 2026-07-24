@@ -2,6 +2,10 @@ const axios = require('axios')
 const express = require('express')
 const router = express.Router()
 
+// Dari:
+// router.get('/orderkuota/login', ...)
+
+// Jadi:
 router.get('/orderkuota/login', async (req, res) => {
   try {
     const { username, password } = req.query
