@@ -922,31 +922,32 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {SOCIAL_CARDS.map((s, i) => (
-              <Reveal
-                key={s.name}
-                as="a"
-                dir={i % 2 === 0 ? "left" : "right"}
-                group="social"
-                className={`social-card ${s.full ? "sm:col-span-2" : ""}`}
-                style={{ ["--accent" as any]: s.accent, ["--accent-soft" as any]: s.accentSoft }}
-              >
-                {/* @ts-expect-error href only valid because Reveal renders an <a> here */}
-                <a href={s.href} target="_blank" rel="noopener noreferrer" className="contents">
-                  <span className="glow-a" />
-                  <span className="glow-b" />
-                  <div className="social-icon" style={{ background: s.iconBg }}>
-                    {s.icon}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <span className="block text-sm font-bold" style={{ color: "var(--text)" }}>{s.name}</span>
-                    <span className="block text-xs truncate" style={{ color: "var(--muted)" }}>{s.handle}</span>
-                  </div>
-                  <div className="social-go">
-                    <ArrowUpRight className="w-3.5 h-3.5" />
-                  </div>
-                </a>
-              </Reveal>
+           {SOCIAL_CARDS.map((s, i) => (
+  <Reveal
+    key={s.name}
+    as="a"
+    href={s.href}
+    target="_blank"
+    rel="noopener noreferrer"
+    dir={i % 2 === 0 ? "left" : "right"}
+    group="social"
+    className={`social-card ${s.full ? "sm:col-span-2" : ""}`}
+    style={{ ["--accent" as any]: s.accent, ["--accent-soft" as any]: s.accentSoft }}
+  >
+    <span className="glow-a" />
+    <span className="glow-b" />
+    <div className="social-icon" style={{ background: s.iconBg }}>
+      {s.icon}
+    </div>
+    <div className="flex-1 min-w-0">
+      <span className="block text-sm font-bold" style={{ color: "var(--text)" }}>{s.name}</span>
+      <span className="block text-xs truncate" style={{ color: "var(--muted)" }}>{s.handle}</span>
+    </div>
+    <div className="social-go">
+      <ArrowUpRight className="w-3.5 h-3.5" />
+    </div>
+  </Reveal>
+))}
             ))}
           </div>
         </section>
