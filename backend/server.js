@@ -39,7 +39,7 @@ if (fs.existsSync(routesPath)) {
   })
 }
 
-// Home
+// Home - List all routes
 app.get('/', (req, res) => {
   const grouped = {}
   routes.forEach(r => {
@@ -53,15 +53,21 @@ app.get('/', (req, res) => {
   })
 })
 
-// 404
+// 404 handler
 app.use((req, res) => {
-  res.status(404).json({ status: false, error: 'Endpoint not found' })
+  res.status(404).json({
+    status: false,
+    error: 'Endpoint not found'
+  })
 })
 
 // Error handler
 app.use((err, req, res, next) => {
   console.error('❌ Error:', err.message)
-  res.status(500).json({ status: false, error: err.message || 'Internal server error' })
+  res.status(500).json({
+    status: false,
+    error: err.message || 'Internal server error'
+  })
 })
 
 // Export untuk Vercel
@@ -73,14 +79,14 @@ if (process.env.VERCEL) {
     console.log('🚀 API Server Running')
     console.log('='.repeat(50))
     console.log(`📡 URL: http://localhost:${PORT}\n`)
-    console.log('📋 Routes:')
+    console.log('📋 Registered Routes:')
     console.log('-'.repeat(50))
     routes.forEach(r => {
       console.log(`  ${r.method.padEnd(6)} ${r.path}`)
     })
     console.log('-'.repeat(50))
-    console.log(`✅ Total: ${routes.length} endpoints`)
+    console.log(`✅ Total: ${routes.length} endpoints loaded`)
     console.log('='.repeat(50))
+    console.log('')
   })
 }
-
